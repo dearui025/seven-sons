@@ -4,8 +4,12 @@ import { AIRole } from '@/types/ai-roles'
 import { AIResponse } from '@/types/chat'
 import { aiConversationManager, ConversationMessage, MemorySnippet } from './ai-conversation-manager'
 
-// 全局演示模式标志 - 只有在明确设置DEMO_MODE=true时才启用
-const GLOBAL_DEMO_MODE = process.env.DEMO_MODE === 'true'
+// 全局演示模式标志 - 在生产环境中默认启用演示模式，除非明确设置DEMO_MODE=false
+const GLOBAL_DEMO_MODE = process.env.DEMO_MODE !== 'false' && (
+  process.env.DEMO_MODE === 'true' || 
+  process.env.NODE_ENV === 'production' ||
+  process.env.VERCEL_ENV === 'production'
+)
 
 // 检查角色是否有有效的API配置
 function hasValidApiConfig(role: AIRole): boolean {
