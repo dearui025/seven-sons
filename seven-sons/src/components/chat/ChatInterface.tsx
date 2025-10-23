@@ -91,31 +91,31 @@ export function ChatInterface() {
   return (
     <div className="flex flex-col h-full bg-background">
       {/* 头部状态栏 */}
-      <div className="border-b bg-card p-3">
+      <div className="border-b bg-card p-2 sm:p-3">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
             {/* 角色头像和信息 */}
             {currentRole ? (
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-medium text-lg">
+              <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-medium text-base sm:text-lg flex-shrink-0">
                   {currentRole.avatar || '🤖'}
                 </div>
-                <div className="flex flex-col">
-                  <h2 className="font-semibold text-foreground text-lg">{currentRole.name}</h2>
+                <div className="flex flex-col flex-1 min-w-0">
+                  <h2 className="font-semibold text-foreground text-base sm:text-lg truncate">{currentRole.name}</h2>
                   {currentRole.description && (
-                    <p className="text-sm text-muted-foreground truncate max-w-xs" title={currentRole.description}>
+                    <p className="text-xs sm:text-sm text-muted-foreground truncate" title={currentRole.description}>
                       {currentRole.description}
                     </p>
                   )}
                 </div>
               </div>
             ) : (
-              <h2 className="font-semibold text-foreground">AI 助手</h2>
+              <h2 className="font-semibold text-foreground text-base sm:text-lg">AI 助手</h2>
             )}
             {/* 只在群聊模式下显示连接状态 */}
             {isGroupChat && <ConnectionStatus />}
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-shrink-0">
             {/* 只在群聊模式下显示在线用户 */}
             {isGroupChat && (
               <OnlineUsersIndicator 
@@ -128,7 +128,7 @@ export function ChatInterface() {
         
         {/* 只在群聊模式下显示正在输入指示器 */}
         {isGroupChat && typingUsers.length > 0 && (
-          <div className="mt-2 text-sm text-muted-foreground">
+          <div className="mt-2 text-xs sm:text-sm text-muted-foreground truncate">
             {typingUsers.join(', ')} 正在输入...
           </div>
         )}
@@ -137,7 +137,7 @@ export function ChatInterface() {
       {/* 消息列表 */}
       <div className="flex-1 overflow-y-auto">
         {displayMessages.length > 0 ? (
-          <div className="p-4 space-y-4">
+          <div className="p-2 sm:p-4 space-y-3 sm:space-y-4">
             {displayMessages.map((msg) => (
               <MessageBubble key={msg.id} message={msg} />
             ))}
@@ -145,15 +145,15 @@ export function ChatInterface() {
             <div ref={messagesEndRef} />
           </div>
         ) : (
-          <div className="flex-1 flex items-center justify-center p-8">
-            <div className="text-center max-w-md">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Send className="w-8 h-8 text-primary" />
+          <div className="flex-1 flex items-center justify-center p-4 sm:p-8">
+            <div className="text-center max-w-md px-4">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                <Send className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
               </div>
-              <h3 className="text-lg font-semibold text-foreground mb-2">
+              <h3 className="text-base sm:text-lg font-semibold text-foreground mb-2">
                 开始新的对话
               </h3>
-              <p className="text-muted-foreground text-sm">
+              <p className="text-muted-foreground text-xs sm:text-sm">
                 向AI助手提问任何问题，获得智能回答和建议
               </p>
             </div>
@@ -162,15 +162,15 @@ export function ChatInterface() {
       </div>
 
       {/* 输入区域 */}
-      <div className="border-t bg-card p-4">
-        <form onSubmit={handleSubmit} className="space-y-3">
+      <div className="border-t bg-card p-2 sm:p-4">
+        <form onSubmit={handleSubmit} className="space-y-2 sm:space-y-3">
           {/* 输入框容器 */}
           <div className="relative">
-            <div className="flex items-end gap-2">
-              {/* 附件按钮 */}
+            <div className="flex items-end gap-1 sm:gap-2">
+              {/* 附件按钮 - 手机端隐藏 */}
               <button
                 type="button"
-                className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors"
+                className="hidden sm:block p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors flex-shrink-0"
                 title="添加附件"
               >
                 <Paperclip className="w-5 h-5" />
@@ -184,16 +184,16 @@ export function ChatInterface() {
                   onChange={(e) => setMessage(e.target.value)}
                   onKeyDown={handleKeyDown}
                   placeholder="输入您的消息... (Shift+Enter 换行)"
-                  className="w-full px-4 py-3 pr-12 border border-input rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent bg-background text-foreground placeholder:text-muted-foreground"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 pr-10 sm:pr-12 border border-input rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent bg-background text-foreground placeholder:text-muted-foreground text-sm sm:text-base"
                   disabled={isLoading}
                   rows={1}
-                  style={{ minHeight: '48px', maxHeight: '120px' }}
+                  style={{ minHeight: '40px', maxHeight: '120px' }}
                 />
                 
-                {/* 表情按钮 */}
+                {/* 表情按钮 - 手机端隐藏 */}
                 <button
                   type="button"
-                  className="absolute right-3 bottom-3 p-1 text-muted-foreground hover:text-foreground transition-colors"
+                  className="hidden sm:block absolute right-3 bottom-3 p-1 text-muted-foreground hover:text-foreground transition-colors"
                   title="添加表情"
                 >
                   <Smile className="w-4 h-4" />
@@ -206,13 +206,19 @@ export function ChatInterface() {
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="p-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="p-2 sm:px-4 sm:py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-1 sm:gap-2"
                     title="发送消息"
                   >
                     {isLoading ? (
-                      <Loader2 className="w-5 h-5 animate-spin" />
+                      <>
+                        <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
+                        <span className="hidden sm:inline text-sm">发送中...</span>
+                      </>
                     ) : (
-                      <Send className="w-5 h-5" />
+                      <>
+                        <Send className="w-4 h-4 sm:w-5 sm:h-5" />
+                        <span className="hidden sm:inline text-sm">发送</span>
+                      </>
                     )}
                   </button>
                 ) : (
@@ -227,9 +233,9 @@ export function ChatInterface() {
                     title={isRecording ? "停止录音" : "语音输入"}
                   >
                     {isRecording ? (
-                      <Square className="w-5 h-5" />
+                      <Square className="w-4 h-4 sm:w-5 sm:h-5" />
                     ) : (
-                      <Mic className="w-5 h-5" />
+                      <Mic className="w-4 h-4 sm:w-5 sm:h-5" />
                     )}
                   </button>
                 )}
@@ -239,7 +245,7 @@ export function ChatInterface() {
 
           {/* 提示文本 */}
           {isLoading && (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
               <Loader2 className="w-3 h-3 animate-spin" />
               AI正在思考中...
             </div>

@@ -93,17 +93,17 @@ export default function Home() {
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100">
       {/* 头部导航 */}
       <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg flex items-center justify-center">
-                <Sparkles className="w-6 h-6 text-white" />
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-14 sm:h-16">
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg flex items-center justify-center">
+                <Sparkles className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
               </div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+              <h1 className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
                 7个儿子
               </h1>
-              {/* 数据库状态指示器 */}
-              <div className="flex items-center space-x-2">
+              {/* 数据库状态指示器 - 手机端隐藏 */}
+              <div className="hidden sm:flex items-center space-x-2">
                 <div className={`w-2 h-2 rounded-full ${
                   dbStatus === 'ready' ? 'bg-green-500' : 
                   dbStatus === 'error' ? 'bg-red-500' : 'bg-yellow-500'
@@ -114,39 +114,37 @@ export default function Home() {
                 </span>
               </div>
             </div>
-            <nav className="flex items-center space-x-6">
-              <a href="#" className="text-gray-600 hover:text-gray-900">首页</a>
+            <nav className="flex items-center space-x-2 sm:space-x-6">
+              {/* 移动端简化导航 */}
               <button
                 onClick={() => router.push('/group-chat')}
-                className="flex items-center space-x-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                className="flex items-center space-x-1 sm:space-x-2 px-2 sm:px-3 py-1.5 sm:py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
               >
                 <MessageSquare className="w-4 h-4" />
-                <span>群聊</span>
+                <span className="text-sm sm:text-base">群聊</span>
               </button>
-              <a href="#features" className="text-gray-600 hover:text-gray-900">功能</a>
-              <a href="#" className="text-gray-600 hover:text-gray-900">关于</a>
               
               {/* 用户认证区域 */}
               {user ? (
-                <div className="flex items-center space-x-4">
-                  <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 sm:space-x-4">
+                  <div className="hidden sm:flex items-center space-x-2">
                     <User className="w-4 h-4 text-gray-600" />
                     <span className="text-sm text-gray-700">{user.email}</span>
                   </div>
                   <button
                     onClick={handleLogout}
-                    className="flex items-center space-x-1 px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                    className="flex items-center space-x-1 px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
                   >
-                    <LogOut className="w-4 h-4" />
+                    <LogOut className="w-3 h-3 sm:w-4 sm:h-4" />
                     <span>退出</span>
                   </button>
                 </div>
               ) : (
                 <button
                   onClick={handleLogin}
-                  className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-200"
+                  className="flex items-center space-x-1 sm:space-x-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-200 text-sm sm:text-base"
                 >
-                  <LogIn className="w-4 h-4" />
+                  <LogIn className="w-3 h-3 sm:w-4 sm:h-4" />
                   <span>登录</span>
                 </button>
               )}
@@ -156,13 +154,13 @@ export default function Home() {
       </header>
 
       {/* 主要内容 */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <main className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-12">
         {/* 欢迎区域 */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+        <div className="text-center mb-8 sm:mb-16">
+          <h2 className="text-2xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 px-2">
             欢迎来到AI角色互动平台
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-base sm:text-xl text-gray-600 max-w-3xl mx-auto px-4">
             与七位独特的AI角色对话，每个角色都有自己的个性、专长和学习能力。
             他们会根据与您的互动不断学习和成长。
           </p>
@@ -184,7 +182,7 @@ export default function Home() {
 
         {/* AI角色网格 */}
         {!isLoading && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 mb-8 sm:mb-12">
           {aiRoles.map((role, index) => (
             <div
               key={index}
@@ -193,10 +191,10 @@ export default function Home() {
               }`}
               onClick={() => setSelectedRole(selectedRole?.name === role.name ? null : role)}
             >
-              <div className="p-6">
+              <div className="p-4 sm:p-6">
                 {/* 头像 */}
-                <div className="flex justify-center mb-4">
-                  <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-100">
+                <div className="flex justify-center mb-3 sm:mb-4">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden bg-gray-100">
                     <Image
                       src={role.avatar_url}
                       alt={role.name}
@@ -209,8 +207,8 @@ export default function Home() {
 
                 {/* 角色信息 */}
                 <div className="text-center">
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">{role.name}</h3>
-                  <p className="text-gray-600 text-sm mb-4 line-clamp-2">{role.description}</p>
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">{role.name}</h3>
+                  <p className="text-gray-600 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2">{role.description}</p>
                   
                   {/* 专长标签 */}
                   <div className="flex flex-wrap gap-1 justify-center mb-4">
@@ -240,10 +238,10 @@ export default function Home() {
 
                   {/* 开始对话按钮 */}
                   <button
-                    className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2 px-4 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-200 flex items-center justify-center space-x-2"
+                    className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2 sm:py-2.5 px-3 sm:px-4 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-200 flex items-center justify-center space-x-1 sm:space-x-2 text-sm sm:text-base"
                     onClick={() => handleStartChat(role.name)}
                   >
-                    <MessageCircle className="w-4 h-4" />
+                    <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     <span>开始对话</span>
                   </button>
                 </div>
@@ -289,57 +287,57 @@ export default function Home() {
         )}
 
         {/* 群聊功能入口 */}
-        <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl shadow-lg p-8 mb-12 text-white text-center">
+        <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl sm:rounded-2xl shadow-lg p-6 sm:p-8 mb-8 sm:mb-12 text-white text-center">
           <div className="max-w-2xl mx-auto">
-            <MessageSquare className="w-16 h-16 mx-auto mb-4" />
-            <h3 className="text-3xl font-bold mb-4">AI角色群聊</h3>
-            <p className="text-lg mb-6 opacity-90">
+            <MessageSquare className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4" />
+            <h3 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">AI角色群聊</h3>
+            <p className="text-sm sm:text-lg mb-4 sm:mb-6 opacity-90">
               让所有AI角色在同一个群聊中互动，体验多角色协作的魅力！
             </p>
             <button
               onClick={() => router.push('/group-chat')}
-              className="bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-flex items-center space-x-2"
+              className="bg-white text-purple-600 px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-flex items-center space-x-2 text-sm sm:text-base"
             >
-              <MessageSquare className="w-5 h-5" />
+              <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5" />
               <span>进入群聊</span>
             </button>
           </div>
         </div>
 
         {/* 功能特色 */}
-        <div className="bg-white rounded-2xl shadow-lg p-8">
-          <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">平台特色</h3>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-6 sm:p-8">
+          <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">平台特色</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             <div className="text-center">
-              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Sparkles className="w-8 h-8 text-purple-600" />
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 text-purple-600" />
               </div>
-              <h4 className="text-lg font-semibold text-gray-900 mb-2">智能学习</h4>
-              <p className="text-gray-600">AI角色会根据对话内容不断学习，提升个性化回应能力</p>
+              <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">智能学习</h4>
+              <p className="text-sm text-gray-600">AI角色会根据对话内容不断学习，提升个性化回应能力</p>
             </div>
             
             <div className="text-center">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="w-8 h-8 text-blue-600" />
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                <Users className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" />
               </div>
-              <h4 className="text-lg font-semibold text-gray-900 mb-2">多角色协作</h4>
-              <p className="text-gray-600">支持多个AI角色同时参与对话，实现协作式问题解决</p>
+              <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">多角色协作</h4>
+              <p className="text-sm text-gray-600">支持多个AI角色同时参与对话，实现协作式问题解决</p>
             </div>
             
             <div className="text-center">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <MessageCircle className="w-8 h-8 text-green-600" />
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                <MessageCircle className="w-6 h-6 sm:w-8 sm:h-8 text-green-600" />
               </div>
-              <h4 className="text-lg font-semibold text-gray-900 mb-2">实时互动</h4>
-              <p className="text-gray-600">流畅的实时对话体验，支持文本、语音等多种交互方式</p>
+              <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">实时互动</h4>
+              <p className="text-sm text-gray-600">流畅的实时对话体验，支持文本、语音等多种交互方式</p>
             </div>
             
             <div className="text-center">
-              <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <MessageSquare className="w-8 h-8 text-orange-600" />
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                <MessageSquare className="w-6 h-6 sm:w-8 sm:h-8 text-orange-600" />
               </div>
-              <h4 className="text-lg font-semibold text-gray-900 mb-2">群聊协作</h4>
-              <p className="text-gray-600">所有AI角色在同一群聊中互动，形成丰富的多角色对话体验</p>
+              <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">群聊协作</h4>
+              <p className="text-sm text-gray-600">所有AI角色在同一群聊中互动，形成丰富的多角色对话体验</p>
             </div>
           </div>
         </div>
