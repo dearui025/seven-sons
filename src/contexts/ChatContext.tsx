@@ -2,8 +2,8 @@
 
 import React, { createContext, useContext, useState, useCallback } from 'react'
 import { ChatContextType, ChatSession, Message, AIRole } from '@/types/chat'
-import { AIService } from '@/lib/ai-service'
 import { useAuth } from './AuthContext'
+import { authService } from '@/lib/auth'
 
 // 演示模式标志
 const DEMO_MODE = process.env.NODE_ENV === 'development' && 
@@ -23,6 +23,11 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
   const sendMessage = useCallback(async (content: string) => {
     if (!currentSession) {
       console.error('没有活动的聊天会话')
+      return
+    }
+
+    if (!currentRole) {
+      console.error('没有选择AI角色')
       return
     }
 
@@ -51,24 +56,46 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
         prev.map(s => s.id === currentSession.id ? updatedSession : s)
       )
 
-      // 获取AI回复（改用静态方法，并构造兼容的角色对象）
-      const roleObj = {
-        id: currentRole?.id || 'general',
-        name: currentRole?.name || '通用助手',
-        description: currentRole?.description || '',
-        specialties: (currentRole as any)?.capabilities || [],
-        personality: (currentRole as any)?.personality || '',
-        avatar_url: currentRole?.avatar || '🤖',
-        settings: { tone: 'balanced', creativity: 0.7, verbosity: 'medium' },
-        api_config: (currentRole as any)?.api_config || undefined // 使用角色的API配置
-      } as any
+      // 调用API获取AI回复（需要身份验证）
+      // 获取当前 session 的 access_token
+      const { session } = await authService.getSession()
+      const token = session?.access_token
 
-      const response = await AIService.generateResponse(roleObj, content, currentSession.id, user?.id)
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json',
+      }
+
+      // 如果有 token，添加到 Authorization 头
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`
+      }
+
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          message: content,
+          roleName: currentRole.name,
+          sessionId: currentSession.id,
+          userId: user?.id
+        })
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'API请求失败')
+      }
+
+      const result = await response.json()
+      
+      if (!result.success) {
+        throw new Error(result.error || 'AI回复失败')
+      }
 
       // 创建AI消息
       const aiMessage: Message = {
         id: `msg-${Date.now()}-ai`,
-        content: response.content,
+        content: result.data.content,
         role: 'assistant',
         timestamp: new Date(),
         sessionId: currentSession.id
@@ -98,10 +125,36 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
 
     } catch (error) {
       console.error('发送消息失败:', error)
+      // 显示错误消息给用户
+      const errorMessage: Message = {
+        id: `msg-${Date.now()}-error`,
+        content: `错误: ${error instanceof Error ? error.message : '发送消息失败'}`,
+        role: 'assistant',
+        timestamp: new Date(),
+        sessionId: currentSession.id
+      }
+      
+      setCurrentSession(prev => {
+        if (!prev) return prev
+        const errorSession = {
+          ...prev,
+          messages: [...prev.messages, errorMessage],
+          updatedAt: new Date()
+        }
+        return errorSession
+      })
+      
+      setSessions(prev => 
+        prev.map(s => s.id === currentSession.id ? {
+          ...s,
+          messages: [...s.messages, errorMessage],
+          updatedAt: new Date()
+        } : s)
+      )
     } finally {
       setIsLoading(false)
     }
-  }, [currentSession, currentRole])
+  }, [currentSession, currentRole, user])
 
   // 创建新会话
   const createSession = useCallback(async (title?: string, roleId?: string): Promise<ChatSession> => {
