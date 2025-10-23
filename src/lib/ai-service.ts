@@ -150,8 +150,9 @@ export class AIService {
         全局演示模式: GLOBAL_DEMO_MODE
       })
       
-      // 优先使用角色级别的API配置，只有在角色配置无效且环境变量也无效时才进入演示模式
-      const isRoleDemoMode = GLOBAL_DEMO_MODE || (!hasRoleApiConfig && !hasEnvApiConfig)
+      // 优先使用角色级别的API配置，只有在角色配置无效且环境变量也无效时才考虑全局演示模式
+      const hasAnyValidConfig = hasRoleApiConfig || hasEnvApiConfig
+      const isRoleDemoMode = !hasAnyValidConfig && GLOBAL_DEMO_MODE
       
       if (isRoleDemoMode) {
         console.log(`[AI Service] 进入演示模式，返回模拟回复`)
