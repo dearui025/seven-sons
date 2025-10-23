@@ -1,27 +1,17 @@
 # Dependencies
 node_modules
-seven-sons/node_modules
-*/node_modules
 
 # Build outputs
+.next
 build
 dist
-.next
-seven-sons/.next
-*/build
-*/dist
-*/.next
 
 # Development files
-.git
-.trae
-.log
-.figma
-*.log
 .env.local
 .env.development
 .env.production
 .env.vercel
+*.log
 
 # IDE files
 .vscode
@@ -42,15 +32,6 @@ coverage
 tmp
 temp
 *.tmp
-
-# Documentation
-README.md
-*.md
-docs/
-
-# Scripts (keep only essential ones)
-scripts/
-*.sh
 
 # Cache directories
 .cache
