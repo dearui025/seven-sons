@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { ChatInterface } from '@/components/chat/ChatInterface'
 import { useChat } from '@/contexts/ChatContext'
@@ -9,6 +9,21 @@ import { getAllAIRoles } from '@/lib/database-setup'
 import { ErrorBoundaryWrapper } from '@/components/ErrorBoundary'
 
 export default function ChatPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">正在加载聊天页面...</p>
+        </div>
+      </div>
+    }>
+      <ChatPageInner />
+    </Suspense>
+  )
+}
+
+function ChatPageInner() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const roleNameParam = searchParams.get('roleName') || ''
