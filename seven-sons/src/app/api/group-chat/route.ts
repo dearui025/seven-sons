@@ -97,8 +97,7 @@ export async function POST(req: NextRequest) {
         ? `
 
 [本轮已有角色回复参考]
-${previousReplies.map(pr => `- ${pr.role}: ${pr.content.slice(0, 300)}`).join('
-')}`
+${previousReplies.map(pr => `- ${pr.role}: ${pr.content.slice(0, 300)}`).join('\n')}`
         : ''
       const augmentedMessage = `${message}${contextSnippet}`
 

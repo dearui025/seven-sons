@@ -491,8 +491,7 @@ export class AIService {
       ? `
 
 重要记忆片段：
-${memorySnippets.map(snippet => `- ${snippet.content}`).join('
-')}`
+${memorySnippets.map(snippet => `- ${snippet.content}`).join('\n')}`
       : ''
 
     // 新增：角色专属知识（systemPrompt），支持两处来源：role.api_config.systemPrompt 或 settings.api_config.systemPrompt
