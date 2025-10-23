@@ -1,0 +1,52 @@
+name: Deploy to Vercel (Production)
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Vercel CLI
+        run: npm i -g vercel@latest
+
+      - name: Add Vercel Environment Variables (Production)
+        working-directory: seven-sons
+        run: |
+          echo "${{ secrets.SUPABASE_URL }}" | vercel env add NEXT_PUBLIC_SUPABASE_URL production --token "${{ secrets.VERCEL_TOKEN }}" --scope ruis-projects-4cfb27dd || true
+          echo "${{ secrets.SUPABASE_ANON }}" | vercel env add NEXT_PUBLIC_SUPABASE_ANON_KEY production --token "${{ secrets.VERCEL_TOKEN }}" --scope ruis-projects-4cfb27dd || true
+          echo "${{ secrets.SUPABASE_SERVICE }}" | vercel env add SUPABASE_SERVICE_ROLE_KEY production --token "${{ secrets.VERCEL_TOKEN }}" --scope ruis-projects-4cfb27dd || true
+
+      - name: Add Vercel Environment Variables (Preview)
+        working-directory: seven-sons
+        run: |
+          echo "${{ secrets.SUPABASE_URL }}" | vercel env add NEXT_PUBLIC_SUPABASE_URL preview --token "${{ secrets.VERCEL_TOKEN }}" --scope ruis-projects-4cfb27dd || true
+          echo "${{ secrets.SUPABASE_ANON }}" | vercel env add NEXT_PUBLIC_SUPABASE_ANON_KEY preview --token "${{ secrets.VERCEL_TOKEN }}" --scope ruis-projects-4cfb27dd || true
+          echo "${{ secrets.SUPABASE_SERVICE }}" | vercel env add SUPABASE_SERVICE_ROLE_KEY preview --token "${{ secrets.VERCEL_TOKEN }}" --scope ruis-projects-4cfb27dd || true
+
+      - name: Install dependencies
+        working-directory: seven-sons
+        run: npm ci
+
+      - name: Build
+        working-directory: seven-sons
+        run: npm run build
+
+      - name: Deploy to Vercel (Production)
+        uses: vercel/action@v3
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: team_POovSgKOnrBkWzArwSTvK9GJ
+          vercel-project-id: prj_SPIJbqpG720ANrD2dTNiyQ4TeRfn
+          working-directory: seven-sons
+          production: true
