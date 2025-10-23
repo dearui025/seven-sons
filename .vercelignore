@@ -1,0 +1,58 @@
+# Dependencies
+node_modules
+seven-sons/node_modules
+*/node_modules
+
+# Build outputs
+build
+dist
+.next
+seven-sons/.next
+*/build
+*/dist
+*/.next
+
+# Development files
+.git
+.trae
+.log
+.figma
+*.log
+.env.local
+.env.development
+.env.production
+.env.vercel
+
+# IDE files
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test files
+coverage
+*.test.js
+*.spec.js
+
+# Temporary files
+tmp
+temp
+*.tmp
+
+# Documentation
+README.md
+*.md
+docs/
+
+# Scripts (keep only essential ones)
+scripts/
+*.sh
+
+# Cache directories
+.cache
+.parcel-cache
+.turbo
