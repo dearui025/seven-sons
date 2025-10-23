@@ -48,5 +48,6 @@ jobs:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: team_POovSgKOnrBkWzArwSTvK9GJ
           vercel-project-id: prj_SPIJbqpG720ANrD2dTNiyQ4TeRfn
+          vercel-project-name: seven-sons
           working-directory: seven-sons
           production: true
