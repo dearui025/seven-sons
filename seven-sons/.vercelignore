@@ -1,0 +1,39 @@
+# Dependencies
+node_modules
+
+# Build outputs
+.next
+build
+dist
+
+# Development files
+.env.local
+.env.development
+.env.production
+.env.vercel
+*.log
+
+# IDE files
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test files
+coverage
+*.test.js
+*.spec.js
+
+# Temporary files
+tmp
+temp
+*.tmp
+
+# Cache directories
+.cache
+.parcel-cache
+.turbo
