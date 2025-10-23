@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "cross-env NODE_OPTIONS=\"--max-old-space-size=4096\" next build",
-    "start": "next start",
-    "lint": "eslint"
+    "dev": "cd seven-sons && next dev --turbopack",
+    "build": "cd seven-sons && cross-env NODE_OPTIONS=\"--max-old-space-size=4096\" next build",
+    "start": "cd seven-sons && next start",
+    "lint": "cd seven-sons && eslint"
   },
   "overrides": {
     "react": "19.1.0",
