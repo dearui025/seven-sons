@@ -1,9 +1,37 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { AIService } from '@/lib/ai-service'
 import { getAllAIRoles } from '@/lib/database-setup'
+import { createClient } from '@supabase/supabase-js'
 
 export async function POST(request: NextRequest) {
   try {
+    // 身份验证检查
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    const supabase = createClient(supabaseUrl, supabaseKey)
+
+    // 从请求头获取授权token
+    const authHeader = request.headers.get('authorization')
+    if (!authHeader) {
+      return NextResponse.json({
+        success: false,
+        error: '未登录，请先登录后使用'
+      }, { status: 401 })
+    }
+
+    // 验证token
+    const token = authHeader.replace('Bearer ', '')
+    const { data: { user }, error: authError } = await supabase.auth.getUser(token)
+    
+    if (authError || !user) {
+      return NextResponse.json({
+        success: false,
+        error: '登录已过期，请重新登录'
+      }, { status: 401 })
+    }
+
+    console.log(`[聊天API] 已验证用户: ${user.email}`)
+
     const { message, roleName, sessionId, userId } = await request.json()
     
     console.log(`[聊天API] 收到请求:`, {

@@ -22,6 +22,28 @@ const supabase = createClient(supabaseUrl, supabaseKey)
 
 export async function POST(req: NextRequest) {
   try {
+    // 身份验证检查
+    const authHeader = req.headers.get('authorization')
+    if (!authHeader) {
+      return NextResponse.json({
+        success: false,
+        error: '未登录，请先登录后使用'
+      }, { status: 401 })
+    }
+
+    // 验证token
+    const token = authHeader.replace('Bearer ', '')
+    const { data: { user }, error: authError } = await supabase.auth.getUser(token)
+    
+    if (authError || !user) {
+      return NextResponse.json({
+        success: false,
+        error: '登录已过期，请重新登录'
+      }, { status: 401 })
+    }
+
+    console.log(`[群聊API] 已验证用户: ${user.email}`)
+
     // 添加更好的错误处理
     let requestBody
     try {
