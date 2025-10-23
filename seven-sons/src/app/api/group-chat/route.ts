@@ -4,8 +4,8 @@ import { aiConversationManager } from '@/lib/ai-conversation-manager'
 import { createClient } from '@supabase/supabase-js'
 import { DEFAULT_AI_ROLES } from '@/types/ai-roles'
 
-// 演示模式检查 - 在生产环境中默认启用演示模式，除非明确设置DEMO_MODE=false
-const DEMO_MODE = process.env.DEMO_MODE !== 'false' && (
+// 演示模式检查 - 只有在明确设置DEMO_MODE=false时才关闭演示模式
+const DEMO_MODE = process.env.DEMO_MODE === 'false' ? false : (
   process.env.DEMO_MODE === 'true' || 
   process.env.NODE_ENV === 'production' ||
   process.env.VERCEL_ENV === 'production'
@@ -94,7 +94,11 @@ export async function POST(req: NextRequest) {
       console.log(`[群聊API] 正在为本批 ${batch.length} 角色并发生成回复...`)
 
       const contextSnippet = previousReplies.length > 0
-        ? `\n\n[本轮已有角色回复参考]\n${previousReplies.map(pr => `- ${pr.role}: ${pr.content.slice(0, 300)}`).join('\n')}`
+        ? `
+
+[本轮已有角色回复参考]
+${previousReplies.map(pr => `- ${pr.role}: ${pr.content.slice(0, 300)}`).join('
+')}`
         : ''
       const augmentedMessage = `${message}${contextSnippet}`
 

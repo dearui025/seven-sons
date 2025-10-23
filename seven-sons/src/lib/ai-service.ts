@@ -4,8 +4,8 @@ import { AIRole } from '@/types/ai-roles'
 import { AIResponse } from '@/types/chat'
 import { aiConversationManager, ConversationMessage, MemorySnippet } from './ai-conversation-manager'
 
-// 全局演示模式标志 - 在生产环境中默认启用演示模式，除非明确设置DEMO_MODE=false
-const GLOBAL_DEMO_MODE = process.env.DEMO_MODE !== 'false' && (
+// 全局演示模式标志 - 只有在明确设置DEMO_MODE=false时才关闭演示模式
+const GLOBAL_DEMO_MODE = process.env.DEMO_MODE === 'false' ? false : (
   process.env.DEMO_MODE === 'true' || 
   process.env.NODE_ENV === 'production' ||
   process.env.VERCEL_ENV === 'production'
@@ -488,7 +488,11 @@ export class AIService {
     
     // 构建记忆上下文
     const memoryContext = memorySnippets.length > 0 
-      ? `\n\n重要记忆片段：\n${memorySnippets.map(snippet => `- ${snippet.content}`).join('\n')}`
+      ? `
+
+重要记忆片段：
+${memorySnippets.map(snippet => `- ${snippet.content}`).join('
+')}`
       : ''
 
     // 新增：角色专属知识（systemPrompt），支持两处来源：role.api_config.systemPrompt 或 settings.api_config.systemPrompt
@@ -497,7 +501,11 @@ export class AIService {
     const systemPromptText = (typeof configSystemPrompt === 'string' ? configSystemPrompt : '')
       || (typeof settingsSystemPrompt === 'string' ? settingsSystemPrompt : '')
     const knowledgeSection = systemPromptText && systemPromptText.trim().length > 0
-      ? `\n\n角色专属知识与指令（systemPrompt）：\n${systemPromptText.trim()}\n`
+      ? `
+
+角色专属知识与指令（systemPrompt）：
+${systemPromptText.trim()}
+`
       : ''
 
     // 构建完整的系统提示词
