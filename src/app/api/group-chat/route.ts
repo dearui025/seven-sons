@@ -5,11 +5,9 @@ import { createClient } from '@supabase/supabase-js'
 import { DEFAULT_AI_ROLES } from '@/types/ai-roles'
 
 // 演示模式检查 - 只有在明确设置DEMO_MODE=false时才关闭演示模式
-const DEMO_MODE = process.env.DEMO_MODE === 'false' ? false : (
-  process.env.DEMO_MODE === 'true' || 
-  process.env.NODE_ENV === 'production' ||
-  process.env.VERCEL_ENV === 'production'
-)
+const DEMO_MODE = process.env.DEMO_MODE === 'false' 
+  ? false 
+  : (process.env.DEMO_MODE === 'true' || (!process.env.DEMO_MODE && (process.env.NODE_ENV === 'production' || process.env.VERCEL_ENV === 'production')))
 // 控制群聊节奏的可配置延迟（默认0，不人为减速）
 const PER_ROLE_DELAY_MS = parseInt(process.env.GROUP_CHAT_DELAY_MS || '0', 10)
 const FIRST_MESSAGE_DELAY_MS = parseInt(process.env.GROUP_CHAT_FIRST_DELAY_MS || '0', 10)

@@ -5,11 +5,9 @@ import { AIResponse } from '@/types/chat'
 import { aiConversationManager, ConversationMessage, MemorySnippet } from './ai-conversation-manager'
 
 // 全局演示模式标志 - 只有在明确设置DEMO_MODE=false时才关闭演示模式
-const GLOBAL_DEMO_MODE = process.env.DEMO_MODE === 'false' ? false : (
-  process.env.DEMO_MODE === 'true' || 
-  process.env.NODE_ENV === 'production' ||
-  process.env.VERCEL_ENV === 'production'
-)
+const GLOBAL_DEMO_MODE = process.env.DEMO_MODE === 'false' 
+  ? false 
+  : (process.env.DEMO_MODE === 'true' || (!process.env.DEMO_MODE && (process.env.NODE_ENV === 'production' || process.env.VERCEL_ENV === 'production')))
 
 // 检查角色是否有有效的API配置
 function hasValidApiConfig(role: AIRole): boolean {
